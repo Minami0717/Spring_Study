@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
@@ -22,12 +22,38 @@
     <p th:text="${board.ctnt}">내용</p>
     <p th:text="${board.createdAt}">작성일</p>
     <p th:text="${board.updatedAt}">수정일</p>
+    <button type="button" class="btn btn-secondary">
+      <a th:href="@{/board}">목록</a>
+    </button>
     <button type="button" class="btn btn-info">
       <a th:href="@{/board/modify/{iboard}(iboard=${board.iboard})}">수정</a>
     </button>
     <button type="button" class="btn btn-danger">
       <a th:href="@{/board/delete/{iboard}(iboard=${board.iboard})}">삭제</a>
     </button>
+
+    <br><br>
+    <p th:text="'전체 댓글 ' + ${cmt.size()} + '개'">0</p>
+    <table class="table table-light table-hover">
+      <tbody>
+        <th:block th:value="댓글"></th:block>
+        <tr th:each="c : ${cmt}">
+          <td th:text="${c.writer}">작성자</td>
+          <td th:text="${c.ctnt}">내용</td>
+          <td th:text="${c.createdAt}" th:align="right">작성일</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <form action="/board/cmt" method="post">
+      <input type="hidden" name="iboard" th:value="${board.iboard}">
+      <div class="mb-3">
+        <input type="text" name="writer" id="exampleFormControlInput2" placeholder="닉네임">
+        <input type="password" name="pw" id="exampleFormControlInput1" placeholder="비밀번호">
+      </div>
+      <textarea id="exampleFormControlTextarea1" name="ctnt" cols="130" placeholder="댓글"></textarea>
+      <button type="submit" class="btn btn-primary">작성</button>
+    </form>
   </div>
 </body>
 </html>
